@@ -28,7 +28,7 @@ public class Lockz implements Serializable {
     //  @Pattern(regexp = "", message = "password doesn't match.")
     private String rssi;
     @NotNull
-    private LockType type;
+    private ELockType type;
 
 
 

@@ -54,7 +54,7 @@ public class OwnerServiceImpl implements IOwnerService {
 
         Map<String , Object> model = new HashMap<>();
         model.put("name", owner.getUsername());
-        model.put("body", "http://localhost:8080/api/auth/validateAccount?validationToken="+validationToken);
+        model.put("body", "http://localhost:8080/api/o/validateAccount/"+validationToken);
         model.put("template", "createAccountVerification.html");
 
         Mail mail = new Mail();
@@ -107,7 +107,7 @@ public class OwnerServiceImpl implements IOwnerService {
         log.debug(password);
         Map<String , Object> model = new HashMap<>();
         model.put("password", password);
-        model.put("body", "http://localhost:8080/api/owner/activate");
+        model.put("body", "http://localhost:8080/api/o/activate");
         model.put("template", "passwordRequest.html");
 
         Mail mail = new Mail();

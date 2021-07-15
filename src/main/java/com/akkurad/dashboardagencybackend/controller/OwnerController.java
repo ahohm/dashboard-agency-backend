@@ -109,33 +109,7 @@ public class OwnerController {
         }
     }
 
-    @RequestMapping(value = "validateAccount/{validationToken}", method = RequestMethod.GET)
-    public ResponseEntity<?> validateAccount(@PathParam("validationToken") String validationToken){
-        log.warn(validationToken);
-        log.error(jwtUtils.getUserNameFromJwtToken(validationToken));
 
-
-        try {
-            iOwnerService.validate(validationToken);
-            return new ResponseEntity( HttpStatus.ACCEPTED);
-        }
-        catch (Exception e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @RequestMapping(value = "activate", method = RequestMethod.GET)
-    public ResponseEntity<?> activate(){
-
-
-        try {
-            log.debug("dfdfdfd");
-            return new ResponseEntity( HttpStatus.ACCEPTED);
-        }
-        catch (Exception e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
 
 }

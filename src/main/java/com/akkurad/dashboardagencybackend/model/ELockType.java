@@ -1,6 +1,6 @@
 package com.akkurad.dashboardagencybackend.model;
 
-public enum LockType {
+public enum ELockType {
     BIKE,
     DOOR,
     CAR,

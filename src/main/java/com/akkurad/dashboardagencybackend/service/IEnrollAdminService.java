@@ -2,5 +2,6 @@ package com.akkurad.dashboardagencybackend.service;
 
 public interface IEnrollAdminService {
 
-    void run() throws Exception;
+    void runOrg1() throws Exception;
+    void runOrg2() throws Exception;
 }

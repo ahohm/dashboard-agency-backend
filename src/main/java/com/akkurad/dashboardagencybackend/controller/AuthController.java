@@ -53,7 +53,7 @@ public class AuthController {
     private IAuthenticationTokenDao iAuthenticationTokenDao;
     private IOwnerService iOwnerService;
 
-    @PostMapping("/signin")
+    @PostMapping("signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager
@@ -70,15 +70,15 @@ public class AuthController {
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                refreshToken.getToken(),
+        return ResponseEntity.ok(new JwtResponse(
+                jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
     }
 
-    @PostMapping("/signup")
+    @PostMapping("signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -133,7 +133,7 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    @PostMapping("/refreshtoken")
+    @PostMapping("refreshtoken")
     public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
@@ -147,28 +147,6 @@ public class AuthController {
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "Refresh token is not in database!"));
     }
 
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequest logOutRequest, HttpServletRequest request) {
-        String token = request.getHeader("Authorization").substring(7);
-        refreshTokenService.deleteByUserId(logOutRequest.getUserId());
-        iAuthenticationTokenDao.save(new AuthenticationToken(token));
-        return ResponseEntity.ok(new MessageResponse("Log out successful!"));
-    }
-
-    @GetMapping("validateAccount")
-    public ResponseEntity<?> validateAccount(@RequestParam("validationToken")String validationToken){
-        log.debug(validationToken);
-        log.debug(jwtUtils.getUserNameFromJwtToken(validationToken));
-
-        try {
-            iOwnerService.validate(validationToken);
-            return new ResponseEntity( HttpStatus.ACCEPTED);
-        }
-        catch (Exception e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
 
 

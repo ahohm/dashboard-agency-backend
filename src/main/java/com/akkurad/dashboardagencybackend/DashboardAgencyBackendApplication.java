@@ -1,6 +1,9 @@
 package com.akkurad.dashboardagencybackend;
 
+import com.akkurad.dashboardagencybackend.dao.IApplicationDao;
 import com.akkurad.dashboardagencybackend.dao.IRoleDao;
+import com.akkurad.dashboardagencybackend.model.Application;
+import com.akkurad.dashboardagencybackend.model.EApplicationType;
 import com.akkurad.dashboardagencybackend.model.ERole;
 import com.akkurad.dashboardagencybackend.model.Role;
 import com.akkurad.dashboardagencybackend.service.impl.EnrollAdminServiceImpl;
@@ -22,6 +25,7 @@ public class DashboardAgencyBackendApplication {
 
     private EnrollAdminServiceImpl enrollAdminServiceImpl;
     private IRoleDao iRoleDao;
+    private IApplicationDao iApplicationDao;
 
     public static void main(String[] args) {
         SpringApplication.run(DashboardAgencyBackendApplication.class, args);
@@ -49,6 +53,21 @@ public class DashboardAgencyBackendApplication {
     }
 
     @Bean
+    public void insertApplications(){
+        List<Application> applications = new ArrayList<>();
+        if (!iApplicationDao.findByName(EApplicationType.KEYLESS).isPresent()){
+            applications.add(new Application(null , EApplicationType.KEYLESS));
+        }
+        if (!iApplicationDao.findByName(EApplicationType.OWNER).isPresent()){
+            applications.add(new Application(null , EApplicationType.OWNER));
+        }
+        if (!iApplicationDao.findByName(EApplicationType.CUSTOMER).isPresent()){
+            applications.add(new Application(null , EApplicationType.CUSTOMER));
+        }
+        iApplicationDao.saveAll(applications);
+    }
+
+    @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName("172.17.0.1");
@@ -66,7 +85,8 @@ public class DashboardAgencyBackendApplication {
     @Bean
     public void enrollAdmin() {
         try {
-            enrollAdminServiceImpl.run();
+            enrollAdminServiceImpl.runOrg1();
+            enrollAdminServiceImpl.runOrg2();
         } catch (Exception e) {
             e.printStackTrace();
         }

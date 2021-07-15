@@ -2,7 +2,6 @@ package com.akkurad.dashboardagencybackend.service.impl;
 
 import com.akkurad.dashboardagencybackend.dto.Filter;
 import com.akkurad.dashboardagencybackend.dto.FilterContainer;
-import com.akkurad.dashboardagencybackend.model.LockType;
 import com.akkurad.dashboardagencybackend.service.IFilterService;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.*;
@@ -13,8 +12,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 

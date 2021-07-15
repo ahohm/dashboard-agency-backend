@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsServiceImpl userDetailsService;
     private AuthEntryPointJwt unauthorizedHandler;
-    private final String[] PUBLIC_ENDPOINT = { "/api/auth/**", "/api/owner/activate", "/403", "/api/test/**","/actuator/**" };
+    //private final String[] PUBLIC_ENDPOINT = { "/api/auth/**", "/api/owner/activate", "/403", "/api/test/**","/actuator/**" };
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -63,8 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**", "/api/owner/activate", "/403", "/api/test/**", "/actuator/**").permitAll()
-//                .antMatchers(PUBLIC_ENDPOINT).permitAll()
+                .antMatchers("/api/auth/**", "/api/logout", "/api/o/**").permitAll()
+                .antMatchers("/api/test/**", "/actuator/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
